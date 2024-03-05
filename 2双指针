@@ -173,4 +173,44 @@ class Solution {
 }
 // 只能删去一次，可能是左边也可能是右边 ——> 那就用一个或运算来决定，左右两边都进行测试一次 ——> 回文字符串，左边和右边同时进行比较
 
+524. 通过删除字母匹配到字典里最长单词
+已解答
+中等
+相关标签
+相关企业
+给你一个字符串 s 和一个字符串数组 dictionary ，找出并返回 dictionary 中最长的字符串，该字符串可以通过删除 s 中的某些字符得到。
 
+如果答案不止一个，返回长度最长且字母序最小的字符串。如果答案不存在，则返回空字符串。
+
+ 
+
+示例 1：
+
+输入：s = "abpcplea", dictionary = ["ale","apple","monkey","plea"]
+输出："apple"
+示例 2：
+
+输入：s = "abpcplea", dictionary = ["a","b","c"]
+输出："a"
+
+class Solution {
+    public String findLongestWord(String s, List<String> dictionary) {
+        String str = "";
+        // 遍历数组
+        for(String st : dictionary) {
+            int l = 0,r = 0;
+            while(l < s.length() && r < st.length()) {
+                if(s.charAt(l) == st.charAt(r)) {
+                    r ++;
+                }
+                l ++;
+            }
+            if(r == st.length()) {
+                if(r > str.length() || (r == str.length() && st.compareTo(str) < 0)) {
+                    str = st;
+                }
+            }
+        }
+        return str;
+    }
+}
