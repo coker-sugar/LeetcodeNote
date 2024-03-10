@@ -1,5 +1,8 @@
 深度优先:搜索一个新节点,对节点进行遍历: 要么用栈先进后出,要么用递归
 
+回溯法：试探法，搜索到某一个节点，发现目前节点不是搜索目前，回退到原来的节点搜索，在目前节点处修改的状态要还原（和深度优先一样，知识多了个还原）
+
+
 695. 岛屿的最大面积
 已解答
 中等
@@ -87,6 +90,154 @@ class Solution {
                 dfs(isConnected,j);
             }
         }
+    }
+}
+
+
+
+46. 全排列
+已解答
+中等
+相关标签
+相关企业
+给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。
+
+ 
+
+示例 1：
+
+输入：nums = [1,2,3]
+输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+示例 2：
+
+输入：nums = [0,1]
+输出：[[0,1],[1,0]]
+示例 3：
+
+输入：nums = [1]
+输出：[[1]]
+
+
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+         List<List<Integer>> ans =  new ArrayList<>();
+         returnAns(nums,0,ans);
+         return ans;
+    }
+    private void returnAns(int[] nums,int level,List<List<Integer>> ans) {
+        if(level == nums.length - 1) {
+            List<Integer> list = new ArrayList<>();
+            for(int num : nums) list.add(num);
+            ans.add(list);
+            return ;
+        }
+        for(int i = level;i < nums.length;i ++) {
+            swap(nums,level,i);
+            returnAns(nums,level + 1,ans);
+            swap(nums,level,i);
+        }
+    }
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+
+
+77. 组合
+已解答
+中等
+相关标签
+相关企业
+给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。
+
+你可以按 任何顺序 返回答案。
+
+ 
+
+示例 1：
+
+输入：n = 4, k = 2
+输出：
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+示例 2：
+
+输入：n = 1, k = 1
+输出：[[1]]
+
+  class Solution {
+        List<List<Integer>> ans = new ArrayList<>();
+        public List<List<Integer>> combine(int n, int k) {
+            backtrack(n,k,new ArrayList<Integer>(),1);
+            return ans;
+        }
+        private void backtrack(int n,int k,ArrayList<Integer> list,int p) {
+            if(k == list.size()) {
+                ans.add(new ArrayList<>(list));
+                return ;
+            }
+            for(int i = p;i <= n;i ++) {
+                list.add(i);
+                backtrack(n,k,list,i + 1);
+                list.remove(list.size() - 1);
+            }
+        }
+    }
+
+79. 单词搜索
+已解答
+中等
+相关标签
+相关企业
+给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+ 
+
+示例 1：
+
+
+输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+输出：true
+示例 2：
+
+
+输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "SEE"
+输出：true
+
+
+class Solution {
+    int height = 0;
+    int width = 0;
+    public boolean exist(char[][] board, String word) {
+        height = board.length;
+        width = board[0].length;
+        boolean result = false;
+        for(int i = 0;i < height;i ++) {
+            for(int j = 0;j < width;j ++) {
+                  result =  dfs(board,word,i,j,0);
+                if(result) return result;
+            }
+        }
+        return result;
+    }
+    private boolean dfs(char[][] board,String word,int i,int j,int index) {
+        if(i < 0 || j < 0 || i >= height || j >= width) return false;
+        if(word.charAt(index) != board[i][j]) return false;
+        if(index == word.length() - 1) return true;
+        board[i][j] = '\0';
+        boolean res =  dfs(board,word,i - 1,j,index + 1) || dfs(board,word,i,j - 1,index + 1) || dfs(board,word,i + 1,j,index + 1) || dfs(board,word,i,j + 1,index + 1);
+        board[i][j] = word.charAt(index); // 既然到了这一步，那么word.charAt(index)和 board[i][j] 必定相等
+        return res;
     }
 }
 
