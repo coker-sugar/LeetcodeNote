@@ -1,3 +1,126 @@
 动态规划和其它遍历算法（如深广度优先搜索）都是将《原问题拆成多个子问题然后求解》，他们之间最本质的区别是，
 动态规划《保存子问题的解》，避免重复计算
 解决动态规划问题的关键是找到《状态转移方程》，这样我们可以通过计算和储存子问题的解来求解最终问题。
+
+70. 爬楼梯
+已解答
+简单
+相关标签
+相关企业
+提示
+假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+
+每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+
+ 
+
+示例 1：
+
+输入：n = 2
+输出：2
+解释：有两种方法可以爬到楼顶。
+1. 1 阶 + 1 阶
+2. 2 阶
+示例 2：
+
+输入：n = 3
+输出：3
+解释：有三种方法可以爬到楼顶。
+1. 1 阶 + 1 阶 + 1 阶
+2. 1 阶 + 2 阶
+3. 2 阶 + 1 阶
+
+class Solution {
+    public int climbStairs(int n) {
+        if(n <= 2) return n;
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp,1);
+        for(int i = 2;i <= n;i ++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+}
+找到一个方程，存储子问题的解
+
+
+198. 打家劫舍
+已解答
+中等
+相关标签
+相关企业
+你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+
+给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
+
+示例 1：
+
+输入：[1,2,3,1]
+输出：4
+解释：偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。
+     偷窃到的最高金额 = 1 + 3 = 4 。
+
+class Solution {
+    public int rob(int[] nums) {
+        if(nums.length == 0) return 0;
+
+        int n = nums.length ;
+        int[] fn = new int[n + 1];
+        fn[0] = 0;
+        fn[1] = nums[0];
+        for(int i = 2;i <= n;i ++) {
+            fn[i] = Math.max(fn[i - 1],fn[i - 2] + nums[i - 1]);
+        }
+        return fn[n];
+    }
+}
+
+class Solution {
+    public int rob(int[] nums) {
+        if(nums.length == 0) return 0;
+
+        int cur = 0,pre = 0;
+        for(int n : nums) {
+            int temp = Math.max(cur,pre + n); // 核心就是：在前一个最大值 和 前前一个最大值+当前值 中选一个值作为结果
+            pre = cur; // 存储前一个最大值
+            cur = temp; // 存储当前最大值
+        }
+        return cur;
+    }
+}
+
+
+413. 等差数列划分
+已解答
+中等
+相关标签
+相关企业
+如果一个数列 至少有三个元素 ，并且任意两个相邻元素之差相同，则称该数列为等差数列。
+
+例如，[1,3,5,7,9]、[7,7,7,7] 和 [3,-1,-5,-9] 都是等差数列。
+给你一个整数数组 nums ，返回数组 nums 中所有为等差数组的 子数组 个数。
+
+子数组 是数组中的一个连续序列。
+
+示例 1：
+
+输入：nums = [1,2,3,4]
+输出：3
+解释：nums 中有三个子等差数组：[1, 2, 3]、[2, 3, 4] 和 [1,2,3,4] 自身。
+
+class Solution {
+    public int numberOfArithmeticSlices(int[] nums) {
+        int n = nums.length;
+        if(n < 3) return 0;
+        int[] dp = new int[n];
+        Arrays.fill(dp,0);
+        for(int i = 2;i < n;i ++) {
+            if(nums[i] - nums[i - 1] == nums[i - 1] - nums[i - 2]) {
+                dp[i] = dp[i - 1] + 1;
+            }
+        }
+        int res = 0;
+        for(int i : dp) res += i;
+        return res;
+    }
+}
