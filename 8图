@@ -1,8 +1,19 @@
-1. 基础知识：度、连通和强连通、邻接矩阵和邻接表、深度和广度
-2. 所有可达路径：https://kamacoder.com/problempage.php?pid=1170
-  邻接矩阵法
+## 图
 
-```
+#### 基础知识：
+
+1. 度
+2. 连通和强连通
+3. 邻接矩阵和邻接表
+4. 深度和广度
+
+#### 所有可达路径
+
+https://kamacoder.com/problempage.php?pid=1170
+
+1. 邻接矩阵法
+
+```c++
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -44,8 +55,9 @@ int main() {
 	}
 }
 ```
-  邻接表
-```
+2. 邻接表
+
+```c++
 #include <iostream>
 #include <vector>
 #include <list>
@@ -87,5 +99,4 @@ int main() {
 	}
 }
 ```
-
 
